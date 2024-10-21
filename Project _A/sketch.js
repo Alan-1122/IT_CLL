@@ -7,7 +7,8 @@ let avoidMouseRadius = 50; // 鼠标点击的避让范围
 let ripples = []; // 存储涟漪效果
 
 function setup() {
-    createCanvas(800, 500);
+    let canvas= createCanvas(800, 500);
+    canvas.parent("p5-canvas-container")
     background(30, 30, 60); // 改为深色背景
     core = new Core(width / 2, height / 2, coreSize);
 }
