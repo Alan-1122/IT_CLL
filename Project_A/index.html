@@ -2,51 +2,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alan Fu</title>
+    <title>Nature Time Capsule</title>
     <link rel="stylesheet" href="style.css">
     <script src="Lib/p5.min.js"></script>
 </head>
 <body>
+    <!-- Page 1 -->
+    <div id="page1" class="page">
+        <header class="header">
+            <h1>Nature Time Capsule</h1>
+            <p>Rediscover the lost beauty of nature in the future.</p>
+        </header>
 
-    <div id="title-wrapper">
-        <h1 class="headline yellow">Alan Fu</h1>
+        <main class="content">
+            <section class="description">
+                <h2>Imagine a World Without Nature</h2>
+                <p>In the distant future, towering skyscrapers pierce the smog-covered sky, and cities illuminated by neon lights exude energy from relentless machines. In this mechanized future, the lush forests, playful animals, and the rustling of leaves may only be distant memories.</p>
+            </section>
+            <div class="circle-container">
+                <div class="circle">Birds:    </div>
+                <div class="circle">Ocean:    </div>
+            </div>
+            <div class="canvas-container">
+                <h2>Nature's Reminder</h2>
+                <div id="canvas-holder"> 
+                    <div id="p5-canvas-container"></div>
+                </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <button onclick="showPage('page2')">Next Page</button>
+        </footer>
     </div>
-    <div id="main-wrapper">
-        <div id="p5-canvas-container">
-            
-        </div>
-    <div class="two-columns">
-        <div class="left">
-            <h3 class="red">Scientific Name:</h3>
-            <p>The Eternal Organism</p>
-            <h3 class="green">Discovered by/at:</h3>
-            <p>Alan on Friday Oct 8</p>
-            <h3>Family:</h3>
-            <p>The extraterrestrial life forms in the awakening of alien stars have super strong reproductive ability, spread outwards, and have extremely strong vitality. This creature is to some extent derived from extraterrestrial life in movies, but it is slightly microscopic, non aggressive, and suitable for existing in liquid environments.</p>
-        </div>
-        <div class="right">
-            <h3 class="red">Habitat:</h3>
-            <p>Liquid</p>
-            <h3 class="green">Appearance:</h3>
-            <p>The biological core is spike shaped and circular, generating cells in random shapes of squares, triangles, and circles. There is a filamentous connection between the core and cells.</p>
-            <h3>Key Characteristics:</h3>
-            <ul>
-                <li>Eternal Core</li>
-                <li>Partially Visible</li>
-                <li>Colorful</li>
-            </ul>
-        </div>
+
+    <!-- Page 2 -->
+    <div id="page2" class="page" style="display: none;">
+        <header class="header">
+            <h1>Second Page</h1>
+            <p>Interactive exploration of our natural heritage.</p>
+        </header>
+
+        <main class="content">
+            <section class="description">
+                <h2>Engage with Nature</h2>
+                <p>Discover how nature connects us through time and space.</p>
+            </section>
+            <div class="canvas-container">
+                <h2>Natures are Precious</h2>
+                <div id="canvas-holder"> 
+                    <div id="p5-canvas-container"></div>
+                </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <button onclick="showPage('page1')">Back to Home</button>
+        </footer>
     </div>
-    <div class="one-column">
-        <p><span class="yellow">What we know so far about this creature:</span> Randomly generated, non aggressive, and interactive.
-            </p>
-        </div>
-    </div>
-    <div id="footer">
-        <p>A CClab project made by Alan Fu in Fall 2024</p>
-    </div>
-    <div id="home"></div>
+
     <script src="sketch.js"></script>
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.style.display = 'none');
 
+            // Show the selected page
+            document.getElementById(pageId).style.display = 'block';
+        }
+    </script>
 </body>
 </html>

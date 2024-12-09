@@ -1,262 +1,175 @@
-let core = { x: 400, y: 250, size: 80, color: [200, 0, 0], isAlive: true };
-let cells = [];
-let maxCells = 30;
-let cellLifetime = 500;
-let rippleLifetime = 60;
+// JavaScript code to enhance interactivity for Page 1
+
+let flowers = [];
+let birds = [];
+let clouds = [];
+let waterOffset = 0;
 let ripples = [];
-let linesToCore = true; // 核心牵引线
-let coreMove = false;
-let timeSinceBirth = 0;
-let cellsGenerationDelay = 0;
-let microbePoints = [];
-let maxMicrobePoints = 5;
 
 function setup() {
-    let canvas= createCanvas(800, 500);
-    canvas.parent("p5-canvas-container")
-  generateCells();
+    let canvas = createCanvas(800, 400);
+    canvas.parent("p5-canvas-container");
+
+    // Initialize flowers
+    for (let i = 0; i < 5; i++) {
+        flowers.push({
+            x: random(50, 300),
+            y: height - 100,
+            size: 0,
+            stemHeight: 0,
+            color: color(255, random(100, 150), random(100, 150))
+        });
+    }
+
+    // Initialize birds
+    for (let i = 0; i < 3; i++) {
+        birds.push({
+            x: random(width / 2, width),
+            y: random(100, 200),
+            speed: random(1.5, 3),
+            wingOffset: 0,
+            direction: 1
+        });
+    }
+
+    // Initialize clouds
+    for (let i = 0; i < 4; i++) {
+        clouds.push({
+            x: random(width),
+            y: random(50, 150),
+            size: random(50, 100)
+        });
+    }
 }
-s
+
 function draw() {
-  background(30, 30, 60);
-  
-  timeSinceBirth++;
+    background(135, 206, 235); // Light blue sky
 
-  // 核心消亡与重生逻辑
-  if (timeSinceBirth > 600) {
-    if (core.isAlive) {
-      // 核心湮灭，所有细胞消失
-      core.isAlive = false;
-      cells = [];
-    } else {
-      // 核心重新生成
-      core.isAlive = true;
-      timeSinceBirth = 0;
-      cellsGenerationDelay = 100; // 设置细胞生成延迟时间
-    }
-  }
+    // Draw clouds
+    drawClouds();
 
-  if (core.isAlive) {
-    // 显示核心
-    drawCore();
-    
-    // 显示细胞
-    if (cellsGenerationDelay <= 0) {
-      for (let i = 0; i < cells.length; i++) {
-        let cell = cells[i];
-        // 如果牵引线消失，细胞缓慢移动到核心
-        if (dist(core.x, core.y, cell.x, cell.y) > 200) {
-          cell.x += (core.x - cell.x) * 0.01;
-          cell.y += (core.y - cell.y) * 0.01;
-        } else {
-          // 围绕核心均匀分布
-          if (!cell.settled) {
-            let angle = atan2(cell.y - core.y, cell.x - core.x);
-            let targetX = core.x + cos(angle) * random(100, 150);
-            let targetY = core.y + sin(angle) * random(100, 150);
-            cell.x += (targetX - cell.x) * 0.05;
-            cell.y += (targetY - cell.y) * 0.05;
+    // Draw grass area
+    fill(34, 139, 34);
+    rect(0, height - 100, width / 2, 100);
 
-            if (dist(cell.x, cell.y, targetX, targetY) < 1) {
-              cell.settled = true; // 标记细胞已经稳定围绕核心
-            }
-          }
-          cell.vibrate();
-        }
-        drawCell(cell);
-        // 绘制细胞与核心的牵引线
-        if (dist(core.x, core.y, cell.x, cell.y) < 200 && linesToCore) {
-          drawConnectingLine(core.x, core.y, cell.x, cell.y);
-        }
-      }
-    } else {
-      cellsGenerationDelay--;
-      if (cellsGenerationDelay === 0) {
-        generateCells();
-      }
-    }
-  }
+    // Draw flowers
+    drawFlowers();
 
-  // 显示并扩展涟漪
-  for (let i = ripples.length - 1; i >= 0; i--) {
-    let ripple = ripples[i];
-    ripple.expand();
-    ripple.display();
-    // 涟漪碰到细胞时推动它们
-    for (let j = 0; j < cells.length; j++) {
-      if (dist(ripple.x, ripple.y, cells[j].x, cells[j].y) < ripple.radius) {
-        cells[j].x += random(-5, 5);  // 推动细胞
-        cells[j].y += random(-5, 5);
-      }
-    }
-    if (ripple.isGone()) {
-      ripples.splice(i, 1);
-    }
-  }
+    // Draw water
+    drawWater();
 
-  // 核心追随鼠标移动
-  if (coreMove) {
-    let targetX = constrain(mouseX, width / 4, 3 * width / 4);
-    let targetY = constrain(mouseY, height / 4, 3 * height / 4);
-    core.x += (targetX - core.x) * 0.05;
-    core.y += (targetY - core.y) * 0.05;
-  }
+    // Draw ripples
+    drawRipples();
 
-  // 显示微生物小点
-  drawMicrobePoints();
+    // Draw birds
+    drawBirds();
+
+    // Draw tree
+    drawTree(100, 300);
 }
 
-function drawCore() {
-  // 绘制核心外部的波动突刺
-  stroke(255, 100, 100);
-  strokeWeight(2);
-  for (let angle = 0; angle < TWO_PI; angle += PI / 8) {
-    let spikeLength = core.size * 0.7 + sin(frameCount * 0.05 + angle) * 10; // 波动的突刺长度
-    let x1 = core.x + cos(angle) * (core.size / 2);
-    let y1 = core.y + sin(angle) * (core.size / 2);
-    let x2 = core.x + cos(angle) * (core.size / 2 + spikeLength);
-    let y2 = core.y + sin(angle) * (core.size / 2 + spikeLength);
-    line(x1, y1, x2, y2);
-  }
-
-  // 绘制核心本体
-  fill(core.color);
-  stroke(255);
-  strokeWeight(6); // 细胞膜效果
-  ellipse(core.x, core.y, core.size, core.size);
-
-  // 核心内部结构
-  fill(255, 255, 100); // 内部较浅的圆形结构
-  ellipse(core.x, core.y, core.size * 0.5, core.size * 0.5);
-  fill(0, 0, 150); // 更小的核心内部结构
-  ellipse(core.x, core.y, core.size * 0.25, core.size * 0.25);
-}
-
-function drawCell(cell) {
-  // 绘制细胞外部的细胞膜
-  stroke(255);
-  strokeWeight(1); // 细胞膜效果
-  fill(cell.color);
-  if (cell.shape === 'circle') {
-    ellipse(cell.x, cell.y, cell.size, cell.size);
-  } else if (cell.shape === 'triangle') {
-    triangle(
-      cell.x - cell.size / 2, cell.y + cell.size / 2,
-      cell.x + cell.size / 2, cell.y + cell.size / 2,
-      cell.x, cell.y - cell.size / 2
-    );
-  } else if (cell.shape === 'square') {
-    rect(cell.x - cell.size / 2, cell.y - cell.size / 2, cell.size, cell.size);
-  }
-}
-
-// 核心和细胞之间的牵引线
-function drawConnectingLine(x1, y1, x2, y2) {
-  stroke(150, 150); // 颜色减弱，减少视觉复杂度
-  strokeWeight(1);
-  let midX = (x1 + x2) / 2;
-  let midY = (y1 + y2) / 2 + sin(frameCount / 20) * 10;
-  bezier(x1, y1, midX, midY, midX, midY, x2, y2);
-}
-
-// 生成细胞
-function generateCells() {
-  cells = [];
-  for (let i = 0; i < maxCells; i++) {
-    let angle = random(TWO_PI);
-    let distance = random(50, 150);
-    let x = core.x + cos(angle) * distance;
-    let y = core.y + sin(angle) * distance;
-    let shapeType = random(['circle', 'triangle', 'square']);
-    let color = [random(50, 255), random(50, 255), random(50, 255)]; // 多样化的颜色
-    cells.push({
-      x: x,
-      y: y,
-      size: random(20, 40), // 适中的细胞尺寸
-      color: color,
-      shape: shapeType,
-      lifetime: cellLifetime,
-      settled: false, // 标记细胞是否稳定
-      vibrate: function () {
-        this.x += random(-1, 1); // 适中的振动效果
-        this.y += random(-1, 1);
-      }
-    });
-  }
-}
-
-// 生成闪烁的小点
-function generateMicrobePoint() {
-  if (microbePoints.length < maxMicrobePoints) {
-    microbePoints.push({
-      x: random(width),
-      y: random(height),
-      lifetime: random(30, 100)
-    });
-  }
-}
-
-// 显示闪烁的小点
-function drawMicrobePoints() {
-  generateMicrobePoint();
-  
-  for (let i = microbePoints.length - 1; i >= 0; i--) {
-    let point = microbePoints[i];
-    fill(255, random(100, 255));
+function drawClouds() {
+    fill(255);
     noStroke();
-    ellipse(point.x, point.y, 5, 5);
-    point.lifetime--;
-
-    if (point.lifetime <= 0) {
-      microbePoints.splice(i, 1);
+    for (let cloud of clouds) {
+        ellipse(cloud.x, cloud.y, cloud.size, cloud.size * 0.6);
+        ellipse(cloud.x + 20, cloud.y - 10, cloud.size * 0.8, cloud.size * 0.5);
+        ellipse(cloud.x - 20, cloud.y - 10, cloud.size * 0.7, cloud.size * 0.4);
+        cloud.x += 0.5; // Move cloud slowly
+        if (cloud.x > width) cloud.x = -cloud.size; // Reset position
     }
-  }
+}
+
+function drawFlowers() {
+    for (let flower of flowers) {
+        // Draw stem
+        stroke(34, 139, 34);
+        line(flower.x, height - 100, flower.x, height - 100 - flower.stemHeight);
+
+        // Draw flower head
+        noStroke();
+        fill(flower.color);
+        ellipse(flower.x, height - 100 - flower.stemHeight - flower.size / 2, flower.size, flower.size);
+
+        // Grow flower gradually
+        if (flower.stemHeight < 50) {
+            flower.stemHeight += 0.2;
+        } else if (flower.size < 20) {
+            flower.size += 0.1;
+        }
+    }
+}
+
+function drawWater() {
+    fill(70, 130, 180);
+    beginShape();
+    for (let x = width / 2; x < width; x++) {
+        let y = height - 100 + sin(x * 0.1 + waterOffset) * 10;
+        vertex(x, y);
+    }
+    vertex(width, height);
+    vertex(width / 2, height);
+    endShape(CLOSE);
+    waterOffset += 0.05;
+}
+
+function drawRipples() {
+    noFill();
+    stroke(255);
+    for (let ripple of ripples) {
+        ellipse(ripple.x, ripple.y, ripple.size, ripple.size);
+        ripple.size += 2; // Expand ripple gradually
+        ripple.opacity -= 3; // Fade ripple
+        if (ripple.opacity <= 0) {
+            ripples.splice(ripples.indexOf(ripple), 1);
+        }
+    }
+}
+
+function drawBirds() {
+    for (let bird of birds) {
+        bird.x += bird.speed * bird.direction;
+        bird.wingOffset = sin(frameCount * 0.1) * 10;
+
+        if (bird.x > width || bird.x < 0) bird.direction *= -1; // Reverse direction if out of bounds
+
+        // Draw bird body
+        fill(255, 215, 0);
+        ellipse(bird.x, bird.y, 40, 20);
+
+        // Draw bird wings
+        fill(255, 140, 0);
+        ellipse(bird.x - 10, bird.y - 10 + bird.wingOffset, 20, 10);
+        ellipse(bird.x + 10, bird.y - 10 - bird.wingOffset, 20, 10);
+
+        // Draw bird eyes
+        fill(0);
+        ellipse(bird.x + 10, bird.y - 5, 5, 5);
+    }
+}
+
+function drawTree(x, y) {
+    // Draw tree trunk
+    fill(139, 69, 19);
+    rect(x, y - 120, 40, 120);
+
+    // Draw tree leaves
+    fill(34, 139, 34);
+    ellipse(x + 20, y - 150, 100, 100);
+    ellipse(x - 20, y - 160, 100, 100);
+    ellipse(x + 40, y - 160, 100, 100);
 }
 
 function mousePressed() {
-  if (dist(mouseX, mouseY, core.x, core.y) < core.size / 2) {
-    coreMove = true;
-  } else {
-    let clickedCell = false;
-    for (let i = 0; i < cells.length; i++) {
-      let cell = cells[i];
-      if (dist(mouseX, mouseY, cell.x, cell.y) < cell.size / 2) {
-        // 改变细胞颜色，模拟伪装能力
-        cell.color = [random(50, 255), random(50, 255), random(50, 255)];
-        clickedCell = true;
-        break;
-      }
+    // Generate ripple on water click
+    if (mouseX > width / 2 && mouseY > height - 100) {
+        ripples.push({ x: mouseX, y: mouseY, size: 10, opacity: 255 });
     }
-    if (!clickedCell) {
-      ripples.push(new Ripple(mouseX, mouseY));
+
+    // Change bird direction on click
+    for (let bird of birds) {
+        if (dist(mouseX, mouseY, bird.x, bird.y) < 20) {
+            bird.direction *= -1; // Reverse bird direction
+        }
     }
-  }
-}
-
-function mouseReleased() {
-  coreMove = false;
-}
-
-// 涟漪效果对象改为函数实现
-function Ripple(x, y) {
-  this.x = x;
-  this.y = y;
-  this.radius = 5;
-  this.lifetime = rippleLifetime;
-
-  this.expand = function () {
-    this.radius += 2;
-    this.lifetime--;
-  };
-
-  this.display = function () {
-    noFill();
-    stroke(255, this.lifetime * 4);
-    strokeWeight(2);
-    ellipse(this.x, this.y, this.radius * 2);
-  };
-
-  this.isGone = function () {
-    return this.lifetime <= 0;
-  };
 }

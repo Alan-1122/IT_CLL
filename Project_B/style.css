@@ -8,7 +8,7 @@
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-color: #57b7a5;
+    background-color: #000000;
     color: #9d3a3a;
 }
 
@@ -42,7 +42,7 @@ body {
     max-width: 800px;
     padding: 20px;
     margin: 20px;
-    background-color: #fff;
+    background-color: #000000;
     border: 1px solid #ddd;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -61,9 +61,10 @@ body {
 .canvas-container {
     margin-top: 30px;
     padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ddd;
+    background-color: #000000;
+    border: 1px solid #000000;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
 #canvas-holder {
@@ -83,8 +84,84 @@ body {
     border-top: 5px solid #2980b9;
 }
 
-.fixed{
+.fixed {
     position: fixed;
     top: 2px;
     left: 2px;
+}
+
+/* Page Visibility */
+.page {
+    display: none;
+}
+
+.page:first-of-type {
+    display: block;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+button:hover {
+    background-color: #1b5d7e;
+}
+
+/* Circle Design */
+.circle-container {
+    position: absolute;
+    left: 70px;
+    top: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.circle {
+    width: 250px;
+    height: 250px;
+    background-color: #2c3e50;
+    color: #fff;
+    border-radius: 50%;  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+#photo-gallery {
+    width: 800px;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border: 2px solid #2980b9;
+    margin-bottom: 20px;
+}
+.photo-buttons {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.photo-buttons button {
+    background-color: #2980b9;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.photo-buttons button:hover {
+    background-color: #3498db;
 }
