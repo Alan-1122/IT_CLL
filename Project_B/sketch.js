@@ -7,7 +7,7 @@ let waterOffset = 0;
 let ripples = [];
 
 function setup() {
-    let canvas = createCanvas(800, 400);
+    let canvas = createCanvas(1200, 400);
     canvas.parent("p5-canvas-container");
 
     // Initialize flowers
@@ -173,3 +173,97 @@ function mousePressed() {
         }
     }
 }
+function showText(element, text) {
+    var hoverText = element.querySelector('.hover-text');
+    if (!hoverText) {
+        // 如果.hover-text不存在，则创建一个新的元素
+
+        hoverText.className = 'hover-text';
+        hoverText.style.display = 'none'; // 初始隐藏
+        hoverText.style.position = 'absolute'; // 可选，根据需求调整位置
+        hoverText.style.backgroundColor = 'rgba(0, 0, 0, 0.7)'; // 可选，背景色
+        hoverText.style.color = '#fff'; // 可选，文字颜色
+        hoverText.style.padding = '5px'; // 可选，内边距
+        hoverText.style.borderRadius = '3px'; // 可选，圆角
+        hoverText.style.zIndex = 1000; // 确保元素在其他内容之上
+        element.appendChild(hoverText);
+    }
+ 
+    hoverText.textContent = text; 
+    hoverText.style.display = 'block';
+    hoverText.style.whiteSpace = 'pre-wrap'; // 允许文本中的换行符生效
+    hoverText.style.width = '400px'
+    // 如果需要，还可以调整其他样式，比如位置、动画等
+    // 例如：hoverText.style.left = '10px';
+    // hoverText.style.top = '10px';
+}
+
+function hideText(element) {
+    var hoverText = element.querySelector('.hover-text');
+    hoverText.style.display = 'none';
+}
+
+// script.js
+function showTextNext(text, textId) {
+    var popUpText = document.getElementById('pop-up-text');
+    popUpText.innerHTML = ''; // 清空之前的文字
+    popUpText.style.width = '200px'
+    popUpText.style.fontSize = '20px'
+    popUpText.style.position = 'absolute';
+    popUpText.style.right = '100px'
+    popUpText.style.top = '-500px'
+    popUpText.style.whiteSpace = 'pre-wrap'; // 允许文本中的换行符生效
+ 
+    // 创建一个span元素数组，每个元素包含文本的一个字符
+    var spans = text.split('').map(function(char) {
+        var span = document.createElement('span');
+        span.textContent = char;
+        return span;
+    });
+
+    // 逐个添加span元素到容器中，并稍微延迟每个元素的动画开始时间
+    spans.forEach(function(span, index) {
+        setTimeout(function() {
+            popUpText.appendChild(span);
+        }, index * 100); // 每个字符延迟100毫秒
+    });
+
+    // 可选：如果你想在动画结束后隐藏文字，可以使用setTimeout
+    // 但由于我们这里是逐个显示，隐藏可能不太合适，除非你有特定需求
+}
+function showTextNextTwo(text, textId) {
+    var popUpText = document.getElementById('pop-up-text2');
+    popUpText.innerHTML = ''; // 清空之前的文字
+    popUpText.style.fontSize = '20px'
+    popUpText.style.width = '200px'
+    popUpText.style.position = 'absolute';
+    popUpText.style.left = '100px'
+    popUpText.style.top = '-500px'
+    popUpText.style.whiteSpace = 'pre-wrap'; // 允许文本中的换行符生效
+
+    // 创建一个span元素数组，每个元素包含文本的一个字符
+    var spans = text.split('').map(function(char) {
+        var span = document.createElement('span');
+        span.textContent = char;
+        return span;
+    });
+
+    // 逐个添加span元素到容器中，并稍微延迟每个元素的动画开始时间
+    spans.forEach(function(span, index) {
+        setTimeout(function() {
+            popUpText.appendChild(span);
+        }, index * 100); // 每个字符延迟100毫秒
+    });
+
+    // 可选：如果你想在动画结束后隐藏文字，可以使用setTimeout
+    // 但由于我们这里是逐个显示，隐藏可能不太合适，除非你有特定需求
+}
+
+// 假设previousPhoto和nextPhoto函数已经定义在其他地方
+// function previousPhoto() {
+//     // ...
+// }
+//
+// function nextPhoto() {
+//     // ...
+// }

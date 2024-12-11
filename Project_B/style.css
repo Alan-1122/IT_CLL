@@ -8,13 +8,15 @@
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-color: #000000;
-    color: #9d3a3a;
+    background-image: url('./pic.jpg'); /* 替换为你的图像路径 */
+    background-size: cover; /* 让背景图覆盖整个区域 */
+    background-repeat: no-repeat; /* 防止背景图重复 */
+    background-position: center; /* 将背景图居中 */
+    color: #b73131; /* 文本颜色保持不变 */
 }
-
 /* Header Section */
 .header {
-    background-color: #2c3e50;
+    background-color: #000000;
     color: #fff;
     text-align: center;
     padding: 40px;
@@ -59,6 +61,7 @@ body {
 
 /* Canvas Container */
 .canvas-container {
+    
     margin-top: 30px;
     padding: 20px;
     background-color: #000000;
@@ -68,7 +71,7 @@ body {
 }
 
 #canvas-holder {
-    width: 800px;
+    width: 1200px;
     height: 400px;
     margin: 20px auto;
     border: 3px solid #2980b9;
@@ -76,7 +79,7 @@ body {
 
 /* Footer Section */
 .footer {
-    background-color: #2c3e50;
+    background-color: #000000;
     color: #fff;
     text-align: center;
     padding: 20px;
@@ -117,17 +120,25 @@ button:hover {
 /* Circle Design */
 .circle-container {
     position: absolute;
-    left: 70px;
-    top: 400px;
+    left: 400px;
+    top: 1100px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.circle-container-two{
+    position: absolute;
+    right: 400px;
+    top: 1100px;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
 .circle {
-    width: 250px;
-    height: 250px;
-    background-color: #2c3e50;
+    width: 350px;
+    height: 150px;
+    /* background-color: #2c3e50; */
     color: #fff;
     border-radius: 50%;  
     display: flex;
@@ -135,7 +146,7 @@ button:hover {
     justify-content: center;
     font-size: 20px;
     font-weight: bold;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    /* box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); */
 }
 #photo-gallery {
     width: 800px;
@@ -164,4 +175,86 @@ button:hover {
 
 .photo-buttons button:hover {
     background-color: #3498db;
+}
+
+#gallery-image{
+    width: 800px;
+    height: 600px;
+}
+
+.hover-text {
+    display: none;
+    position: absolute;
+    top: 110%; /* 稍微向下偏移，以避免遮挡 */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap; /* 防止文字换行 */
+}
+
+/* styles.css */
+.pop-up-text {
+    font-size: 24px;
+    margin-top: 20px;
+    text-align: center;
+    height: 30px; /* 设置容器高度，确保文字垂直居中 */
+    line-height: 30px; /* 设置行高与容器高度相同，确保文字垂直居中 */
+    white-space: nowrap; /* 防止文字换行 */
+}
+ 
+.pop-up-text span {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: popUp 0.3s ease-out forwards;
+}
+ 
+@keyframes popUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.text-container {
+    width: 200px;
+    top: 500px;
+    left: 100px;
+    font-weight: bold;
+    position: absolute; /* 根据需要调整位置 */
+    padding: 10px;
+    color: rgba(255, 0, 0, 0.7);
+    border-radius: 5px;
+    font-size: 16px;
+    white-space: pre-wrap; /* 防止文本换行 */
+    /* 可以添加其他样式，如动画效果等 */
+}
+ 
+.text-container2 {
+    width: 200px;
+    top: 500px;
+    right: 100px;
+    font-weight: bold;
+    position: absolute; /* 根据需要调整位置 */
+    padding: 10px;
+    color: rgba(255, 0, 0, 0.7);
+    border-radius: 5px;
+    font-size: 16px;
+    white-space: pre-wrap; /* 防止文本换行 */
+    /* 可以添加其他样式，如动画效果等 */
+}
+ 
+.text-container span {
+    opacity: 0; /* 初始隐藏字符 */
+    position: relative;
+    animation: fadeIn 0.5s ease-in-out forwards; /* 定义动画 */
+}
+ 
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
 }

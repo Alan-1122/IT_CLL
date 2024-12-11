@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nature Time Capsule</title>
+    <title>Recall the Nature</title>
     <link rel="stylesheet" href="style.css">
     <script src="Lib/p5.min.js"></script>
 </head>
@@ -10,27 +10,41 @@
     <!-- Page 1 -->
     <div id="page1" class="page">
         <header class="header">
-            <h1>Nature Time Capsule</h1>
-            <p>Rediscover the lost beauty of nature in the future.</p>
+            <h1>Recall the Nature</h1>
+            <p>Rediscover the lost beauty of nature</p>
         </header>
 
         <main class="content">
             <section class="description">
-                <h2>Imagine a World Without Nature</h2>
-                <p>In the distant future, towering skyscrapers pierce the smog-covered sky, and cities illuminated by neon lights exude energy from relentless machines. In this mechanized future, the lush forests, playful animals, and the rustling of leaves may only be distant memories.</p>
+                <h2>Message from Ancient People</h2>
+                <p>In the distant future, you may live in a cyberpunk-like world. Towering skyscrapers pierce the smog-shrouded sky, and neon-lit cities radiate energy from relentless machines. In this desolate and mechanized future, lush forests, frolicking animals, and choppy ocean waves may just be a blur of the past.Here,I would like to leave some traces of past nature for you to recall and interact.</p>
             </section>
-            <div class="circle-container">
-                <div class="circle">Birds:    </div>
-                <div class="circle">Ocean:    </div>
-            </div>
+       
+
             <div class="canvas-container">
-                <h2>Nature's Reminder</h2>
+                <h2>Simple Nature Interaction</h2>
                 <div id="canvas-holder"> 
                     <div id="p5-canvas-container"></div>
                 </div>
             </div>
+            <div style="margin:20px;height:400px;width:1200px;display: flex; justify-content: space-around;">
+                <div class="circle-container">
+                <div class="circle" onmouseover="showText(this, 'Bird:an animal that can fly throughthe air,is small in size,and feeds on plants and small animals and insects. It may be replaced in your time by small machine flying objects.')" onmouseout="hideText(this)">
+                    <img src="./bird.pic.jpg" alt="" style="width:100px;height:100px">
+                    <div class="hover-text" id="birds-text"></div>
+                </div>
+                </div>
+                <div class="circle-container-two">
+
+                <div class="circle" onmouseover="showText(this, 'Ocean:A body of water consisting of a large amount of brackish water surrounded by neighboring land. There is an abundance of nutrients, flora and fauna, which provide a great deal of resources for mankind. The oceans of the future may be degraded, dried up and difficult to see.')" onmouseout="hideText(this)">
+                    <img src="./ocean.pic.jpg" alt="" style="width:100px;height:100px">
+                    <div class="hover-text" id="ocean-text"></div>
+                </div>
+                </div>
+            </div>
         </main>
         <footer class="footer">
+            <button onclick="previousPage('guide')">Previous Page</button>
             <button onclick="showPage('page2')">Next Page</button>
         </footer>
     </div>
@@ -38,25 +52,36 @@
     <!-- Page 2 -->
     <div id="page2" class="page" style="display: none;">
         <header class="header">
-            <h1>Second Page</h1>
-            <p>Interactive exploration of our natural heritage.</p>
+            <h1>Recall the Nature</h1>
+            <p>Searching for the old nature</p>
         </header>
-
+       
         <main class="content">
             <section class="description">
-                <h2>Engage with Nature</h2>
-                <p>Discover how nature connects us through time and space.</p>
+                <h2>Natural Remains</h2>
+                <p>See what is real nature</p>
             </section>
+            <div class="circle-container"> 
+                <div id="pop-up-text" class="pop-up-text"></div>
+            </div>
+            <div class="circle-container-two">
+                <div id="pop-up-text2" class="pop-up-text2"></div>
+            </div>
             <div class="canvas-container">
-                <h2>Photo Gallery</h2>
+                <h2>Nature Photo Gallery</h2>
                 <div id="photo-gallery">
                     <img id="gallery-image" src="animals.jpg" alt="Gallery Imagine" />
                 </div>
+
                 <div class="photo-buttons">
+                    <button onclick="showTextNext('In my time, animals and nature still hold a place. However, it should not be underestimated that by 2024, there have been issues with human attitudes towards protecting nature, with increasing pollution and the disappearance of flora and fauna. With the expansion of cities, how long can the remaining land be maintained?', 'Previous Text')">Remind</button>
                     <button onclick="previousPhoto()">Previous</button>
                     <button onclick="nextPhoto()">Next</button>
+                    <button onclick="showTextNextTwo('In the distant future, perhaps humans will live in high-tech cities and enjoy various conveniences. However, the green trees, blooming flowers, and chirping birds may have long disappeared. Are you really happy in the cold mechanical city without warmth?', 'Next Text')">Remind</button>
                 </div>
+       
             </div>
+            
         </main>
         <footer class="footer">
             <button onclick="showPage('page1')">Back to Home</button>
@@ -72,6 +97,9 @@
 
             // Show the selected page
             document.getElementById(pageId).style.display = 'block';
+        }
+        function previousPage(pageId) {
+            window.location.href = './guide.html'
         }
     </script>
 </body>
